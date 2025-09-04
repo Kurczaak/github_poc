@@ -1,7 +1,49 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+  "@@locale": "en",
+  "counterAppBarTitle": "Counter",
+  "@counterAppBarTitle": {
+    "description": "Text shown in the AppBar of the Counter Page"
+  },
+  "repositorySearchTitle": "Repository Search",
+  "@repositorySearchTitle": {
+    "description": "Title shown in the AppBar of the Repository Search Page"
+  },
+  "searchRepositoriesHint": "Search repositories...",
+  "@searchRepositoriesHint": {
+    "description": "Hint text shown in the search input field"
+  },
+  "searchButton": "Search",
+  "@searchButton": {
+    "description": "Text shown on the search button"
+  },
+  "searchForGitHubRepositories": "Search for GitHub repositories",
+  "@searchForGitHubRepositories": {
+    "description": "Main text shown in empty state"
+  },
+  "enterKeywordsToFind": "Enter keywords to find repositories",
+  "@enterKeywordsToFind": {
+    "description": "Subtitle text shown in empty state"
+  },
+  "searchingRepositories": "Searching repositories...",
+  "@searchingRepositories": {
+    "description": "Text shown while searching for repositories"
+  },
+  "foundRepositoriesFor": "Found {count} repositories for \"{query}\"",
+  "@foundRepositoriesFor": {
+    "description": "Text showing search results count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of repositories found"
+      },
+      "query": {
+        "type": "String",
+        "description": "Search query"
+      }
     }
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error title"
+  }
 }

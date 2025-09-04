@@ -25,3 +25,19 @@ class CounterRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [RepositorySearchPage]
+class RepositorySearchRoute extends PageRouteInfo<void> {
+  const RepositorySearchRoute({List<PageRouteInfo>? children})
+    : super(RepositorySearchRoute.name, initialChildren: children);
+
+  static const String name = 'RepositorySearchRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const RepositorySearchPage();
+    },
+  );
+}
