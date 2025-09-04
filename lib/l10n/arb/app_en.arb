@@ -1,7 +1,159 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+  "@@locale": "en",
+  "counterAppBarTitle": "Counter",
+  "@counterAppBarTitle": {
+    "description": "Text shown in the AppBar of the Counter Page"
+  },
+  "repositorySearchTitle": "Repository Search",
+  "@repositorySearchTitle": {
+    "description": "Title shown in the AppBar of the Repository Search Page"
+  },
+  "searchRepositoriesHint": "Search repositories...",
+  "@searchRepositoriesHint": {
+    "description": "Hint text shown in the search input field"
+  },
+  "searchButton": "Search",
+  "@searchButton": {
+    "description": "Text shown on the search button"
+  },
+  "searchForGitHubRepositories": "Search for GitHub repositories",
+  "@searchForGitHubRepositories": {
+    "description": "Main text shown in empty state"
+  },
+  "enterKeywordsToFind": "Enter keywords to find repositories",
+  "@enterKeywordsToFind": {
+    "description": "Subtitle text shown in empty state"
+  },
+  "searchingRepositories": "Searching repositories...",
+  "@searchingRepositories": {
+    "description": "Text shown while searching for repositories"
+  },
+  "foundRepositoriesFor": "Found {count} repositories for \"{query}\"",
+  "@foundRepositoriesFor": {
+    "description": "Text showing search results count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of repositories found"
+      },
+      "query": {
+        "type": "String",
+        "description": "Search query"
+      }
     }
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error title"
+  },
+  "repositoryDetails": "Repository Details",
+  "@repositoryDetails": {
+    "description": "Title shown in the AppBar of the Repository Details Page"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Label for repository description section"
+  },
+  "stats": "Statistics",
+  "@stats": {
+    "description": "Label for repository statistics section"
+  },
+  "stars": "Stars",
+  "@stars": {
+    "description": "Label for star count"
+  },
+  "forks": "Forks",
+  "@forks": {
+    "description": "Label for fork count"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for programming language"
+  },
+  "lastUpdated": "Last updated",
+  "@lastUpdated": {
+    "description": "Label for last updated date"
+  },
+  "viewOnGitHub": "View on GitHub",
+  "@viewOnGitHub": {
+    "description": "Button text to open repository on GitHub"
+  },
+  "noDescriptionAvailable": "No description available",
+  "@noDescriptionAvailable": {
+    "description": "Text shown when repository has no description"
+  },
+  "issues": "Issues",
+  "@issues": {
+    "description": "Label for issues"
+  },
+  "pullRequests": "Pull Requests",
+  "@pullRequests": {
+    "description": "Label for pull requests"
+  },
+  "open": "Open",
+  "@open": {
+    "description": "Label for open state"
+  },
+  "closed": "Closed",
+  "@closed": {
+    "description": "Label for closed state"
+  },
+  "merged": "Merged",
+  "@merged": {
+    "description": "Label for merged state"
+  },
+  "draft": "Draft",
+  "@draft": {
+    "description": "Label for draft pull request"
+  },
+  "comments": "Comments",
+  "@comments": {
+    "description": "Label for comments count"
+  },
+  "reviews": "Reviews",
+  "@reviews": {
+    "description": "Label for reviews count"
+  },
+  "files": "Files",
+  "@files": {
+    "description": "Label for changed files count"
+  },
+  "additions": "Additions",
+  "@additions": {
+    "description": "Label for code additions"
+  },
+  "deletions": "Deletions",
+  "@deletions": {
+    "description": "Label for code deletions"
+  },
+  "createdBy": "Created by {author}",
+  "@createdBy": {
+    "description": "Text showing who created the item",
+    "placeholders": {
+      "author": {
+        "type": "String",
+        "description": "Author name"
+      }
+    }
+  },
+  "updatedOn": "Updated on {date}",
+  "@updatedOn": {
+    "description": "Text showing when item was updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "description": "Formatted date"
+      }
+    }
+  },
+  "noItemsFound": "No {type} found",
+  "@noItemsFound": {
+    "description": "Text shown when no items are found",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "description": "Type of items (issues, pull requests, etc.)"
+      }
+    }
+  }
 }
