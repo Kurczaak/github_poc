@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:github_poc/domain/model/user.dart';
 
 class Repository extends Equatable {
   const Repository({
@@ -11,6 +12,7 @@ class Repository extends Equatable {
     required this.language,
     required this.htmlUrl,
     required this.updatedAt,
+    required this.owner,
   });
 
   final int id;
@@ -22,6 +24,7 @@ class Repository extends Equatable {
   final String language;
   final String htmlUrl;
   final DateTime updatedAt;
+  final User owner;
 
   @override
   List<Object?> get props => [
@@ -34,5 +37,6 @@ class Repository extends Equatable {
     language,
     htmlUrl,
     updatedAt,
+    owner,
   ];
 }

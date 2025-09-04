@@ -272,18 +272,39 @@ class _RepositoryCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Repository name and full name
-              Text(
-                repository.name,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                repository.fullName,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
+              // Owner info and repository name
+              Row(
+                children: [
+                  // Owner avatar
+                  CircleAvatar(
+                    radius: 16,
+                    backgroundImage: NetworkImage(repository.owner.avatarUrl),
+                    backgroundColor: Colors.grey[300],
+                  ),
+                  const SizedBox(width: 8),
+                  // Repository and owner names
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          repository.name,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        Text(
+                          repository.owner.login,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Colors.grey[600],
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
 

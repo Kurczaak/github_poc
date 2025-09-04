@@ -8,11 +8,14 @@ class GetRepositoryIssuesUseCase {
 
   final GithubRepository _githubRepository;
 
-  Future<List<Issue>> call(String repositoryId) async {
-    if (repositoryId.trim().isEmpty) {
-      throw ArgumentError('Repository ID cannot be empty');
+  Future<List<Issue>> call(String owner, String repo) async {
+    if (owner.trim().isEmpty) {
+      throw ArgumentError('Owner cannot be empty');
+    }
+    if (repo.trim().isEmpty) {
+      throw ArgumentError('Repository name cannot be empty');
     }
 
-    return _githubRepository.getRepositoryIssues(repositoryId.trim());
+    return _githubRepository.getRepositoryIssues(owner.trim(), repo.trim());
   }
 }

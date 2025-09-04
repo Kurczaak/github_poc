@@ -8,11 +8,14 @@ class GetRepositoryPullRequestUseCase {
 
   final GithubRepository _githubRepository;
 
-  Future<List<PullRequest>> call(String repositoryId) async {
-    if (repositoryId.trim().isEmpty) {
-      throw ArgumentError('Repository ID cannot be empty');
+  Future<List<PullRequest>> call(String owner, String repo) async {
+    if (owner.trim().isEmpty) {
+      throw ArgumentError('Owner cannot be empty');
+    }
+    if (repo.trim().isEmpty) {
+      throw ArgumentError('Repository name cannot be empty');
     }
 
-    return _githubRepository.getRepositoryPullRequests(repositoryId.trim());
+    return _githubRepository.getRepositoryPullRequests(owner.trim(), repo.trim());
   }
 }

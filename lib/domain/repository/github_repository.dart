@@ -7,8 +7,11 @@ abstract class GithubRepository {
   Future<List<Repository>> searchRepositories(String query);
 
   /// Get issues for a specific repository
-  Future<List<Issue>> getRepositoryIssues(String repositoryId);
+  Future<List<Issue>> getRepositoryIssues(String owner, String repo);
 
   /// Get pull requests for a specific repository
-  Future<List<PullRequest>> getRepositoryPullRequests(String repositoryId);
+  Future<List<PullRequest>> getRepositoryPullRequests(
+    String owner,
+    String repo,
+  );
 }

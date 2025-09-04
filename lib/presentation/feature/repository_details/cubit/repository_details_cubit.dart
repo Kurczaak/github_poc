@@ -23,10 +23,14 @@ class RepositoryDetailsCubit extends Cubit<RepositoryDetailsState> {
     emit(const RepositoryDetailsLoading());
 
     try {
+      // Use the owner from the repository model
+      final owner = repository.owner.login;
+      final repoName = repository.name;
+
       // Load both issues and pull requests in parallel
       final results = await Future.wait([
-        _getRepositoryIssuesUseCase(repository.fullName),
-        _getRepositoryPullRequestUseCase(repository.fullName),
+        _getRepositoryIssuesUseCase(owner, repoName),
+        _getRepositoryPullRequestUseCase(owner, repoName),
       ]);
 
       final issues = results[0] as List<Issue>;

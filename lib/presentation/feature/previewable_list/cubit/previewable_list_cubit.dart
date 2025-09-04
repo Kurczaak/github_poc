@@ -17,11 +17,11 @@ class PreviewableListCubit extends Cubit<PreviewableListState> {
   final GetRepositoryIssuesUseCase _getRepositoryIssuesUseCase;
   final GetRepositoryPullRequestUseCase _getRepositoryPullRequestUseCase;
 
-  Future<void> loadIssues(String repoId) async {
+  Future<void> loadIssues(String owner, String repoName) async {
     emit(const PreviewableListLoading());
 
     try {
-      final issues = await _getRepositoryIssuesUseCase(repoId);
+      final issues = await _getRepositoryIssuesUseCase(owner, repoName);
       emit(
         PreviewableListSuccess(
           items: issues.cast<Previewable>(),
@@ -33,11 +33,14 @@ class PreviewableListCubit extends Cubit<PreviewableListState> {
     }
   }
 
-  Future<void> loadPullRequests(String repoId) async {
+  Future<void> loadPullRequests(String owner, String repoName) async {
     emit(const PreviewableListLoading());
 
     try {
-      final pullRequests = await _getRepositoryPullRequestUseCase(repoId);
+      final pullRequests = await _getRepositoryPullRequestUseCase(
+        owner,
+        repoName,
+      );
       emit(
         PreviewableListSuccess(
           items: pullRequests.cast<Previewable>(),
