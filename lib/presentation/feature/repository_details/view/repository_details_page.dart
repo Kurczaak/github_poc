@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_poc/app/router/app_router.dart';
-import 'package:github_poc/data/mock/mock_previewable_generator.dart';
 import 'package:github_poc/domain/model/repository.dart';
+import 'package:github_poc/injection.dart';
 import 'package:github_poc/l10n/l10n.dart';
 import 'package:github_poc/presentation/feature/previewable_list/view/previewable_list_page.dart';
+import 'package:github_poc/presentation/feature/repository_details/cubit/repository_details_cubit.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,6 +16,21 @@ class RepositoryDetailsPage extends StatelessWidget {
     required this.repository,
     super.key,
   });
+
+  final Repository repository;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          getIt<RepositoryDetailsCubit>()..loadRepositoryData(repository),
+      child: _RepositoryDetailsView(repository: repository),
+    );
+  }
+}
+
+class _RepositoryDetailsView extends StatelessWidget {
+  const _RepositoryDetailsView({required this.repository});
 
   final Repository repository;
 
@@ -44,7 +61,14 @@ class RepositoryDetailsPage extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Issues and Pull Requests Navigation
-            _NavigationSection(repository: repository),
+            BlocBuilder<RepositoryDetailsCubit, RepositoryDetailsState>(
+              builder: (context, state) {
+                return _NavigationSection(
+                  repository: repository,
+                  state: state,
+                );
+              },
+            ),
             const SizedBox(height: 24),
 
             // Last Updated
@@ -312,9 +336,13 @@ class _GitHubButton extends StatelessWidget {
 }
 
 class _NavigationSection extends StatelessWidget {
-  const _NavigationSection({required this.repository});
+  const _NavigationSection({
+    required this.repository,
+    required this.state,
+  });
 
   final Repository repository;
+  final RepositoryDetailsState state;
 
   @override
   Widget build(BuildContext context) {
@@ -330,52 +358,92 @@ class _NavigationSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _NavigationCard(
-                icon: Icons.error_outline,
-                label: l10n.issues,
-                onTap: () {
-                  final issues = MockPreviewableGenerator.generateMockIssues(
-                    repository,
-                  );
-                  context.router.push(
-                    PreviewableListRoute(
-                      parameters: PreviewableListRouteParams(
-                      repository: repository,
-                      items: issues,
-                      title: l10n.issues,
-                      )
-                    ),
-                  );
-                },
+        if (state is RepositoryDetailsLoading) ...[
+          Row(
+            children: [
+              Expanded(
+                child: _LoadingNavigationCard(
+                  icon: Icons.error_outline,
+                  label: l10n.issues,
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _NavigationCard(
-                icon: Icons.merge_type,
-                label: l10n.pullRequests,
-                onTap: () {
-                  final pullRequests =
-                      MockPreviewableGenerator.generateMockPullRequests(
-                        repository,
-                      );
-                  context.router.push(
-                    PreviewableListRoute(
-                      parameters: PreviewableListRouteParams(
-                      repository: repository,
-                      items: pullRequests,
-                      title: l10n.pullRequests,
-                      )
-                    ),
-                  );
-                },
+              const SizedBox(width: 12),
+              Expanded(
+                child: _LoadingNavigationCard(
+                  icon: Icons.merge_type,
+                  label: l10n.pullRequests,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ] else if (state is RepositoryDetailsSuccess) ...[
+          Row(
+            children: [
+              Expanded(
+                child: _NavigationCard(
+                  icon: Icons.error_outline,
+                  label: l10n.issues,
+                  count: (state as RepositoryDetailsSuccess).issues.length,
+                  onTap: () {
+                    context.router.push(
+                      PreviewableListRoute(
+                        parameters: PreviewableListRouteParams(
+                          repository: repository,
+                          items: (state as RepositoryDetailsSuccess).issues,
+                          title: l10n.issues,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _NavigationCard(
+                  icon: Icons.merge_type,
+                  label: l10n.pullRequests,
+                  count: (state as RepositoryDetailsSuccess)
+                      .openPullRequests
+                      .length,
+                  onTap: () {
+                    context.router.push(
+                      PreviewableListRoute(
+                        parameters: PreviewableListRouteParams(
+                          repository: repository,
+                          items: (state as RepositoryDetailsSuccess)
+                              .openPullRequests,
+                          title: l10n.pullRequests,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ] else if (state is RepositoryDetailsError) ...[
+          Row(
+            children: [
+              Expanded(
+                child: _ErrorNavigationCard(
+                  icon: Icons.error_outline,
+                  label: l10n.issues,
+                  onRetry: () =>
+                      context.read<RepositoryDetailsCubit>().retry(repository),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _ErrorNavigationCard(
+                  icon: Icons.merge_type,
+                  label: l10n.pullRequests,
+                  onRetry: () =>
+                      context.read<RepositoryDetailsCubit>().retry(repository),
+                ),
+              ),
+            ],
+          ),
+        ],
       ],
     );
   }
@@ -386,11 +454,13 @@ class _NavigationCard extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.count,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final int? count;
 
   @override
   Widget build(BuildContext context) {
@@ -413,10 +483,126 @@ class _NavigationCard extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: 8),
+            if (count != null) ...[
+              Text(
+                count.toString(),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 4),
+            ],
             Text(
               label,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingNavigationCard extends StatelessWidget {
+  const _LoadingNavigationCard({
+    required this.icon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            size: 32,
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ErrorNavigationCard extends StatelessWidget {
+  const _ErrorNavigationCard({
+    required this.icon,
+    required this.label,
+    required this.onRetry,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onRetry,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.error.withOpacity(0.3),
+          ),
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).colorScheme.error.withOpacity(0.05),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.refresh,
+              size: 32,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Retry',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
               ),
               textAlign: TextAlign.center,
             ),

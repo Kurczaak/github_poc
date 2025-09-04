@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_poc/app/router/app_router.dart';
 import 'package:github_poc/domain/model/repository.dart';
+import 'package:github_poc/injection.dart';
 import 'package:github_poc/l10n/l10n.dart';
 import 'package:github_poc/presentation/feature/repository_search/cubit/repository_search_cubit.dart';
 
@@ -13,7 +14,7 @@ class RepositorySearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => RepositorySearchCubit(),
+      create: (_) => getIt<RepositorySearchCubit>(),
       child: const RepositorySearchView(),
     );
   }
