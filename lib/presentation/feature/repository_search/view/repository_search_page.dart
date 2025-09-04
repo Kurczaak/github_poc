@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_poc/app/router/app_router.dart';
 import 'package:github_poc/domain/model/repository.dart';
 import 'package:github_poc/l10n/l10n.dart';
 import 'package:github_poc/presentation/feature/repository_search/cubit/repository_search_cubit.dart';
@@ -194,7 +195,14 @@ class _SuccessState extends StatelessWidget {
             itemCount: state.repositories.length,
             itemBuilder: (context, index) {
               final repo = state.repositories[index];
-              return _RepositoryCard(repository: repo);
+              return _RepositoryCard(
+                repository: repo,
+                onTap: () {
+                  context.router.push(
+                    RepositoryDetailsRoute(repository: repo),
+                  );
+                },
+              );
             },
           ),
         ),
@@ -243,93 +251,101 @@ class _ErrorState extends StatelessWidget {
 }
 
 class _RepositoryCard extends StatelessWidget {
-  const _RepositoryCard({required this.repository});
+  const _RepositoryCard({
+    required this.repository,
+    this.onTap,
+  });
 
   final Repository repository;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Repository name and full name
-            Text(
-              repository.name,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              repository.fullName,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Description
-            if (repository.description.isNotEmpty)
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Repository name and full name
               Text(
-                repository.description,
-                style: Theme.of(context).textTheme.bodyMedium,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                repository.name,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            const SizedBox(height: 12),
+              Text(
+                repository.fullName,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 8),
 
-            // Stats and language
-            Row(
-              children: [
-                // Language
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    repository.language,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+              // Description
+              if (repository.description.isNotEmpty)
+                Text(
+                  repository.description,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              const SizedBox(height: 12),
+
+              // Stats and language
+              Row(
+                children: [
+                  // Language
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      repository.language,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
-                ),
-                const Spacer(),
+                  const Spacer(),
 
-                // Stars
-                Icon(
-                  Icons.star,
-                  size: 16,
-                  color: Colors.grey[600],
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  repository.stargazersCount.toString(),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(width: 16),
+                  // Stars
+                  Icon(
+                    Icons.star,
+                    size: 16,
+                    color: Colors.grey[600],
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    repository.stargazersCount.toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(width: 16),
 
-                // Forks
-                Icon(
-                  Icons.call_split,
-                  size: 16,
-                  color: Colors.grey[600],
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  repository.forksCount.toString(),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ],
+                  // Forks
+                  Icon(
+                    Icons.call_split,
+                    size: 16,
+                    color: Colors.grey[600],
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    repository.forksCount.toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

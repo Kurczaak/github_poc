@@ -45,5 +45,41 @@
   "error": "Error",
   "@error": {
     "description": "Generic error title"
+  },
+  "repositoryDetails": "Repository Details",
+  "@repositoryDetails": {
+    "description": "Title shown in the AppBar of the Repository Details Page"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Label for repository description section"
+  },
+  "stats": "Statistics",
+  "@stats": {
+    "description": "Label for repository statistics section"
+  },
+  "stars": "Stars",
+  "@stars": {
+    "description": "Label for star count"
+  },
+  "forks": "Forks",
+  "@forks": {
+    "description": "Label for fork count"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Label for programming language"
+  },
+  "lastUpdated": "Last updated",
+  "@lastUpdated": {
+    "description": "Label for last updated date"
+  },
+  "viewOnGitHub": "View on GitHub",
+  "@viewOnGitHub": {
+    "description": "Button text to open repository on GitHub"
+  },
+  "noDescriptionAvailable": "No description available",
+  "@noDescriptionAvailable": {
+    "description": "Text shown when repository has no description"
   }
 }
