@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:github_poc/app/router/app_router.dart';
+import 'package:github_poc/data/mock/mock_previewable_generator.dart';
 import 'package:github_poc/domain/model/repository.dart';
 import 'package:github_poc/l10n/l10n.dart';
+import 'package:github_poc/presentation/feature/previewable_list/view/previewable_list_page.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,6 +41,10 @@ class RepositoryDetailsPage extends StatelessWidget {
 
             // Statistics Section
             _StatisticsSection(repository: repository),
+            const SizedBox(height: 24),
+
+            // Issues and Pull Requests Navigation
+            _NavigationSection(repository: repository),
             const SizedBox(height: 24),
 
             // Last Updated
@@ -301,5 +308,121 @@ class _GitHubButton extends StatelessWidget {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+}
+
+class _NavigationSection extends StatelessWidget {
+  const _NavigationSection({required this.repository});
+
+  final Repository repository;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Browse',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _NavigationCard(
+                icon: Icons.error_outline,
+                label: l10n.issues,
+                onTap: () {
+                  final issues = MockPreviewableGenerator.generateMockIssues(
+                    repository,
+                  );
+                  context.router.push(
+                    PreviewableListRoute(
+                      parameters: PreviewableListRouteParams(
+                      repository: repository,
+                      items: issues,
+                      title: l10n.issues,
+                      )
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _NavigationCard(
+                icon: Icons.merge_type,
+                label: l10n.pullRequests,
+                onTap: () {
+                  final pullRequests =
+                      MockPreviewableGenerator.generateMockPullRequests(
+                        repository,
+                      );
+                  context.router.push(
+                    PreviewableListRoute(
+                      parameters: PreviewableListRouteParams(
+                      repository: repository,
+                      items: pullRequests,
+                      title: l10n.pullRequests,
+                      )
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _NavigationCard extends StatelessWidget {
+  const _NavigationCard({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

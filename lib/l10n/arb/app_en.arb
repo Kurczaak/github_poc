@@ -81,5 +81,79 @@
   "noDescriptionAvailable": "No description available",
   "@noDescriptionAvailable": {
     "description": "Text shown when repository has no description"
+  },
+  "issues": "Issues",
+  "@issues": {
+    "description": "Label for issues"
+  },
+  "pullRequests": "Pull Requests",
+  "@pullRequests": {
+    "description": "Label for pull requests"
+  },
+  "open": "Open",
+  "@open": {
+    "description": "Label for open state"
+  },
+  "closed": "Closed",
+  "@closed": {
+    "description": "Label for closed state"
+  },
+  "merged": "Merged",
+  "@merged": {
+    "description": "Label for merged state"
+  },
+  "draft": "Draft",
+  "@draft": {
+    "description": "Label for draft pull request"
+  },
+  "comments": "Comments",
+  "@comments": {
+    "description": "Label for comments count"
+  },
+  "reviews": "Reviews",
+  "@reviews": {
+    "description": "Label for reviews count"
+  },
+  "files": "Files",
+  "@files": {
+    "description": "Label for changed files count"
+  },
+  "additions": "Additions",
+  "@additions": {
+    "description": "Label for code additions"
+  },
+  "deletions": "Deletions",
+  "@deletions": {
+    "description": "Label for code deletions"
+  },
+  "createdBy": "Created by {author}",
+  "@createdBy": {
+    "description": "Text showing who created the item",
+    "placeholders": {
+      "author": {
+        "type": "String",
+        "description": "Author name"
+      }
+    }
+  },
+  "updatedOn": "Updated on {date}",
+  "@updatedOn": {
+    "description": "Text showing when item was updated",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "description": "Formatted date"
+      }
+    }
+  },
+  "noItemsFound": "No {type} found",
+  "@noItemsFound": {
+    "description": "Text shown when no items are found",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "description": "Type of items (issues, pull requests, etc.)"
+      }
+    }
   }
 }

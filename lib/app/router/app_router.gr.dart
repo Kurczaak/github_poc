@@ -27,6 +27,53 @@ class CounterRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PreviewableListPage]
+class PreviewableListRoute extends PageRouteInfo<PreviewableListRouteArgs> {
+  PreviewableListRoute({
+    required PreviewableListRouteParams parameters,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PreviewableListRoute.name,
+         args: PreviewableListRouteArgs(parameters: parameters, key: key),
+         initialChildren: children,
+       );
+
+  static const String name = 'PreviewableListRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<PreviewableListRouteArgs>();
+      return PreviewableListPage(parameters: args.parameters, key: args.key);
+    },
+  );
+}
+
+class PreviewableListRouteArgs {
+  const PreviewableListRouteArgs({required this.parameters, this.key});
+
+  final PreviewableListRouteParams parameters;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'PreviewableListRouteArgs{parameters: $parameters, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PreviewableListRouteArgs) return false;
+    return parameters == other.parameters && key == other.key;
+  }
+
+  @override
+  int get hashCode => parameters.hashCode ^ key.hashCode;
+}
+
+/// generated route for
 /// [RepositoryDetailsPage]
 class RepositoryDetailsRoute extends PageRouteInfo<RepositoryDetailsRouteArgs> {
   RepositoryDetailsRoute({
