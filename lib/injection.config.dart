@@ -33,6 +33,8 @@ import 'package:github_poc/presentation/feature/repository_search/cubit/reposito
 import 'package:injectable/injectable.dart' as _i526;
 
 const String _test = 'test';
+const String _prod = 'prod';
+const String _dev = 'dev';
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -52,6 +54,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i168.GithubRepository>(
       () => _i388.GithubRepositoryImpl(gh<_i917.GithubApiClient>()),
+      registerFor: {_prod, _dev},
     );
     gh.factory<_i595.SearchForRepositoriesUseCase>(
       () => _i595.SearchForRepositoriesUseCase(gh<_i168.GithubRepository>()),
@@ -66,14 +69,14 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i543.RepositorySearchCubit(gh<_i595.SearchForRepositoriesUseCase>()),
     );
-    gh.factory<_i905.PreviewableListCubit>(
-      () => _i905.PreviewableListCubit(
+    gh.factory<_i814.RepositoryDetailsCubit>(
+      () => _i814.RepositoryDetailsCubit(
         gh<_i145.GetRepositoryIssuesUseCase>(),
         gh<_i970.GetRepositoryPullRequestUseCase>(),
       ),
     );
-    gh.factory<_i814.RepositoryDetailsCubit>(
-      () => _i814.RepositoryDetailsCubit(
+    gh.factory<_i905.PreviewableListCubit>(
+      () => _i905.PreviewableListCubit(
         gh<_i145.GetRepositoryIssuesUseCase>(),
         gh<_i970.GetRepositoryPullRequestUseCase>(),
       ),
