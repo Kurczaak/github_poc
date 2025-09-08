@@ -8,7 +8,7 @@ import 'package:github_poc/domain/model/repository.dart';
 import 'package:github_poc/domain/repository/github_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: GithubRepository)
+@LazySingleton(as: GithubRepository, env: [Environment.prod, Environment.dev])
 class GithubRepositoryImpl implements GithubRepository {
   const GithubRepositoryImpl(this._apiClient);
 
