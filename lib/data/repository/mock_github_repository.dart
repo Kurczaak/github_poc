@@ -5,7 +5,7 @@ import 'package:github_poc/domain/model/user.dart';
 import 'package:github_poc/domain/repository/github_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: GithubRepository, env: [Environment.test])
+@Injectable(as: GithubRepository, env: [Environment.test])
 class MockGithubRepository implements GithubRepository {
   @override
   Future<List<Repository>> searchRepositories(String query) async {
@@ -19,13 +19,11 @@ class MockGithubRepository implements GithubRepository {
         id: index + 1,
         name: '${query.toLowerCase()}-repo-${index + 1}',
         fullName: '$userName/${query.toLowerCase()}-repo-${index + 1}',
-        description:
-            'A mock repository for $query with some interesting features and capabilities.',
+        description: 'A mock repository for $query with some interesting features and capabilities.',
         stargazersCount: (index + 1) * 150,
         forksCount: (index + 1) * 25,
         language: ['Dart', 'TypeScript', 'Python', 'JavaScript', 'Go'][index],
-        htmlUrl:
-            'https://github.com/$userName/${query.toLowerCase()}-repo-${index + 1}',
+        htmlUrl: 'https://github.com/$userName/${query.toLowerCase()}-repo-${index + 1}',
         updatedAt: DateTime.now().subtract(Duration(days: index + 1)),
         owner: User(
           id: index + 100,
@@ -46,8 +44,7 @@ class MockGithubRepository implements GithubRepository {
     return List.generate(8, (index) {
       return Issue(
         id: index + 1,
-        title:
-            'Issue ${index + 1}: Fix the ${_getRandomFeature(index)} functionality',
+        title: 'Issue ${index + 1}: Fix the ${_getRandomFeature(index)} functionality',
         subtitle:
             'This is a detailed description of issue ${index + 1}. '
             'We need to fix the ${_getRandomFeature(index)} functionality because '

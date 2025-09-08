@@ -48,11 +48,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i917.GithubApiClient>(
       () => networkModule.provideGithubApiClient(gh<_i361.Dio>()),
     );
-    gh.lazySingleton<_i168.GithubRepository>(
+    gh.factory<_i168.GithubRepository>(
       () => _i417.MockGithubRepository(),
       registerFor: {_test},
     );
-    gh.lazySingleton<_i168.GithubRepository>(
+    gh.factory<_i168.GithubRepository>(
       () => _i388.GithubRepositoryImpl(gh<_i917.GithubApiClient>()),
       registerFor: {_prod, _dev},
     );
